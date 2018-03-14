@@ -1,0 +1,36 @@
+version: "3"
+
+services:
+  jenkins:
+    image: jenkins
+    ports:
+      - "80:8080"
+    networks:
+      - back-tier
+  slave1:
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /etc/group:/etc/group
+      - /home/eyonasi/.docker:/home/jenkins/.docker
+    image: otomato/jenkins-slave-alpine:curl
+    networks:
+      - back-tier
+  gerrit:
+    volumes:
+      - git-volume:/var/gerrit/git
+      - db-volume:/var/gerrit/db
+      - index-volume:/var/gerrit/index
+      - cache-volume:/var/gerrit/cache
+    image: gerritcodereview/gerrit
+    ports:
+      - "29418:29418"
+      - "8080:8080"
+    networks:
+      - back-tier
+networks:
+  back-tier:
+volumes:
+  git-volume:
+  db-volume:
+  index-volume:
+  cache-volume:
