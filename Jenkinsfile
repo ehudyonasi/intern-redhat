@@ -4,7 +4,7 @@ pipeline{
     stage('test'){
       steps{
           sh 'git clone https://github.com/ehudyonasi/intern-redhat.git'
-          sh 'python ${fileName}'
+          sh 'python hi.py'
         }
       }
   }
